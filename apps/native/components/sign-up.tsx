@@ -94,8 +94,8 @@ export function SignUp() {
   });
 
   return (
-    <Surface variant="default" className="p-8 rounded-[40px] bg-white shadow-2xl">
-      <Text className="text-zinc-900 text-2xl font-bold mb-6">Create Account</Text>
+    <Surface variant="secondary" className="p-4 rounded-lg">
+      <Text className="text-foreground font-medium mb-4">Create Account</Text>
 
       <form.Subscribe
         selector={(state) => ({
@@ -194,12 +194,12 @@ export function SignUp() {
                 <Button 
                    onPress={form.handleSubmit} 
                    isDisabled={isSubmitting} 
-                   className="mt-6 bg-zinc-900 h-14 rounded-2xl"
+                   className="mt-1"
                 >
                   {isSubmitting ? (
-                    <Spinner size="sm" color="white" />
+                    <Spinner size="sm" color="default" />
                   ) : (
-                    <Button.Label className="text-white font-bold text-lg">Create Account</Button.Label>
+                    <Button.Label>Create Account</Button.Label>
                   )}
                 </Button>
               </View>

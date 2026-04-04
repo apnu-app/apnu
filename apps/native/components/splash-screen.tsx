@@ -12,7 +12,7 @@ const TINDER_ORANGE = "#ff6036";
 export const SplashScreen = () => {
   return (
     <View style={styles.container}>
-      <StatusBar style="light" />
+      <StatusBar hidden />
 
       <LinearGradient
         colors={[TINDER_ORANGE, TINDER_PINK]}

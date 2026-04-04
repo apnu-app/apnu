@@ -9,8 +9,10 @@ import {
   TextField,
   useToast,
 } from "heroui-native";
-import { useRef } from "react";
-import { Text, TextInput, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useRef, useState } from "react";
+import { Text, TextInput, View, Pressable } from "react-native";
 import z from "zod";
 
 import { authClient } from "@/lib/auth-client";
@@ -49,9 +51,11 @@ function getErrorMessage(error: unknown): string | null {
 }
 
 export function SignUp() {
+  const router = useRouter();
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const { toast } = useToast();
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -82,6 +86,7 @@ export function SignUp() {
               variant: "success",
               label: "Account created successfully",
             });
+            router.replace("/onboarding");
           },
         },
       );
@@ -89,8 +94,8 @@ export function SignUp() {
   });
 
   return (
-    <Surface variant="secondary" className="p-4 rounded-lg">
-      <Text className="text-foreground font-medium mb-4">Create Account</Text>
+    <Surface variant="default" className="p-8 rounded-[40px] bg-white shadow-2xl">
+      <Text className="text-zinc-900 text-2xl font-bold mb-6">Create Account</Text>
 
       <form.Subscribe
         selector={(state) => ({
@@ -157,27 +162,44 @@ export function SignUp() {
                   {(field) => (
                     <TextField>
                       <Label>Password</Label>
-                      <Input
-                        ref={passwordInputRef}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChangeText={field.handleChange}
-                        placeholder="••••••••"
-                        secureTextEntry
-                        autoComplete="new-password"
-                        textContentType="newPassword"
-                        returnKeyType="go"
-                        onSubmitEditing={form.handleSubmit}
-                      />
+                      <View className="relative">
+                        <Input
+                          ref={passwordInputRef}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChangeText={field.handleChange}
+                          placeholder="••••••••"
+                          secureTextEntry={!showPassword}
+                          autoComplete="new-password"
+                          textContentType="newPassword"
+                          returnKeyType="go"
+                          onSubmitEditing={form.handleSubmit}
+                          className="pr-12"
+                        />
+                        <Pressable 
+                          onPress={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 p-2"
+                        >
+                          <Ionicons 
+                            name={showPassword ? "eye-off-outline" : "eye-outline"} 
+                            size={22} 
+                            color="#999" 
+                          />
+                        </Pressable>
+                      </View>
                     </TextField>
                   )}
                 </form.Field>
 
-                <Button onPress={form.handleSubmit} isDisabled={isSubmitting} className="mt-1">
+                <Button 
+                   onPress={form.handleSubmit} 
+                   isDisabled={isSubmitting} 
+                   className="mt-6 bg-zinc-900 h-14 rounded-2xl"
+                >
                   {isSubmitting ? (
-                    <Spinner size="sm" color="default" />
+                    <Spinner size="sm" color="white" />
                   ) : (
-                    <Button.Label>Create Account</Button.Label>
+                    <Button.Label className="text-white font-bold text-lg">Create Account</Button.Label>
                   )}
                 </Button>
               </View>

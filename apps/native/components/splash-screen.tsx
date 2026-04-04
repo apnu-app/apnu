@@ -1,48 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withSpring,
-  withDelay,
-} from "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
 import Svg, { Path } from "react-native-svg";
 import { LinearGradient } from "expo-linear-gradient";
 
 const { width } = Dimensions.get("window");
 
-// Tinder-style Gradient Colors
 const TINDER_PINK = "#fd267a";
 const TINDER_ORANGE = "#ff6036";
 
 export const SplashScreen = () => {
-  const logoScale = useSharedValue(0.9);
-  const logoOpacity = useSharedValue(0);
-  const footerOpacity = useSharedValue(0);
-
-  useEffect(() => {
-    // Smooth fade and scale for the main logo
-    logoOpacity.value = withTiming(1, { duration: 800 });
-    logoScale.value = withSpring(1, { damping: 15, stiffness: 100 });
-
-    // Footer branding fade-in
-    footerOpacity.value = withDelay(600, withTiming(1, { duration: 800 }));
-  }, []);
-
-  const animatedLogoStyle = useAnimatedStyle(() => ({
-    opacity: logoOpacity.value,
-    transform: [{ scale: logoScale.value }],
-  }));
-
-  const animatedFooterStyle = useAnimatedStyle(() => ({
-    opacity: footerOpacity.value,
-  }));
-
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
+      <StatusBar style="light" />
 
       <LinearGradient
         colors={[TINDER_ORANGE, TINDER_PINK]}
@@ -52,14 +22,14 @@ export const SplashScreen = () => {
       />
 
       <View style={styles.centerContainer}>
-        <Animated.View style={[styles.logoContainer, animatedLogoStyle]}>
+        <View style={styles.logoContainer}>
           <View style={styles.logoRow}>
             <Text style={styles.brandTitle}>apnu</Text>
           </View>
-        </Animated.View>
+        </View>
       </View>
 
-      <Animated.View style={[styles.footer, animatedFooterStyle]}>
+      <View style={styles.footer}>
         <Text style={styles.fromLabel}>from</Text>
         <View style={styles.companyRow}>
           <Svg width={20} height={20} viewBox="0 0 24 24" fill="white">
@@ -69,7 +39,7 @@ export const SplashScreen = () => {
           </Svg>
           <Text style={styles.companyName}>ApnuLabs</Text>
         </View>
-      </Animated.View>
+      </View>
     </View>
   );
 };

@@ -1,49 +1,64 @@
-import { Ionicons } from "@expo/vector-icons";
-import { Card, Chip, useThemeColor } from "heroui-native";
-import { Text, View, Pressable } from "react-native";
-
-import { Container } from "@/components/container";
-import { SignIn } from "@/components/sign-in";
-import { SignUp } from "@/components/sign-up";
+import { Card, useThemeColor, Button } from "heroui-native";
+import { Text, View, useColorScheme } from "react-native";
 import { authClient } from "@/lib/auth-client";
+import { Container } from "@/components/container";
+import Animated, { FadeInUp } from "react-native-reanimated";
+import { Stack, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
-export default function Home() {
+export default function Dashboard() {
+  const router = useRouter();
   const { data: session } = authClient.useSession();
+  const colorScheme = useColorScheme();
 
-  const mutedColor = useThemeColor("muted");
-  const successColor = useThemeColor("success");
-  const dangerColor = useThemeColor("danger");
-  const foregroundColor = useThemeColor("foreground");
+  // Theme-aware colors
+  const bgColor = useThemeColor("background");
+
+  const surfaceColor = useThemeColor("surface"); // For the card background
 
   return (
-    <Container className="p-6">
-      <View className="py-4 mb-6">
-        <Text className="text-4xl font-bold text-foreground mb-2">BETTER T STACK</Text>
-      </View>
+    <Container className="bg-background" disableSafeArea>
+      {/* Auto-adapts Status Bar icons based on current color scheme */}
+      <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+      <Stack.Screen options={{ headerShown: false, title: "" }} />
 
-      {session?.user ? (
-        <Card variant="secondary" className="mb-6 p-4">
-          <Text className="text-foreground text-base mb-2">
-            Welcome, <Text className="font-medium">{session.user.name}</Text>
+      <View
+        style={{
+          padding: 24,
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <View
+          className="p-8 rounded-[40px] w-full items-center shadow-sm"
+          style={{ backgroundColor: surfaceColor }}
+        >
+          <Text className="text-muted text-sm font-bold uppercase tracking-widest mb-2">
+            Authenticated Account
           </Text>
-          <Text className="text-muted text-sm mb-4">{session.user.email}</Text>
-          <Pressable
-            className="bg-danger py-3 px-4 rounded-lg self-start active:opacity-70"
-            onPress={() => {
-              authClient.signOut();
-            }}
-          >
-            <Text className="text-foreground font-medium">Sign Out</Text>
-          </Pressable>
-        </Card>
-      ) : null}
 
-      {!session?.user && (
-        <>
-          <SignIn />
-          <SignUp />
-        </>
-      )}
+          <Text className="text-foreground text-3xl font-extrabold text-center mb-1">
+            Hello, {session?.user?.name || "User"}!
+          </Text>
+
+          <Text className="text-muted text-lg text-center mb-8">
+            {session?.user?.email}
+          </Text>
+
+          <Button
+            onPress={async () => {
+              await authClient.signOut();
+              router.replace("/landing");
+            }}
+            variant="secondary"
+            className="bg-red-50 text-red-600 dark:bg-red-900/10 h-14 rounded-2xl w-full"
+          >
+            <Button.Label className="text-red-500 font-bold">
+              Sign Out
+            </Button.Label>
+          </Button>
+        </View>
+      </View>
     </Container>
   );
 }

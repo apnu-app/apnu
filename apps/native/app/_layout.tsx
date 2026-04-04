@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-
+import { StatusBar } from "expo-status-bar";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
 
 export const unstable_settings = {
@@ -12,10 +12,14 @@ export const unstable_settings = {
 
 function StackLayout() {
   return (
-    <Stack screenOptions={{}}>
-      <Stack.Screen name="splash" options={{ headerShown: false }} />
-      <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{ title: "Modal", presentation: "modal" }} />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="splash" />
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(drawer)" />
+      <Stack.Screen
+        name="modal"
+        options={{ title: "Modal", presentation: "modal", headerShown: true }}
+      />
     </Stack>
   );
 }
@@ -26,6 +30,7 @@ export default function Layout() {
       <KeyboardProvider>
         <AppThemeProvider>
           <HeroUINativeProvider>
+            <StatusBar style="auto" />
             <StackLayout />
           </HeroUINativeProvider>
         </AppThemeProvider>

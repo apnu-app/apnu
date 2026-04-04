@@ -9,15 +9,24 @@ import {
   TextField,
   useToast,
 } from "heroui-native";
-import { useRef } from "react";
-import { Text, TextInput, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useRef, useState } from "react";
+import { Text, TextInput, View, Pressable } from "react-native";
 import z from "zod";
 
 import { authClient } from "@/lib/auth-client";
 
 const signInSchema = z.object({
-  email: z.string().trim().min(1, "Email is required").email("Enter a valid email address"),
-  password: z.string().min(1, "Password is required").min(8, "Use at least 8 characters"),
+  email: z
+    .string()
+    .trim()
+    .min(1, "Email is required")
+    .email("Enter a valid email address"),
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .min(8, "Use at least 8 characters"),
 });
 
 function getErrorMessage(error: unknown): string | null {
@@ -48,8 +57,10 @@ function getErrorMessage(error: unknown): string | null {
 }
 
 function SignIn() {
+  const router = useRouter();
   const passwordInputRef = useRef<TextInput>(null);
   const { toast } = useToast();
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -78,6 +89,7 @@ function SignIn() {
               variant: "success",
               label: "Signed in successfully",
             });
+            router.replace("/(drawer)");
           },
         },
       );
@@ -131,23 +143,42 @@ function SignIn() {
                   {(field) => (
                     <TextField>
                       <Label>Password</Label>
-                      <Input
-                        ref={passwordInputRef}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChangeText={field.handleChange}
-                        placeholder="••••••••"
-                        secureTextEntry
-                        autoComplete="password"
-                        textContentType="password"
-                        returnKeyType="go"
-                        onSubmitEditing={form.handleSubmit}
-                      />
+                      <View className="relative">
+                        <Input
+                          ref={passwordInputRef}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChangeText={field.handleChange}
+                          placeholder="••••••••"
+                          secureTextEntry={!showPassword}
+                          autoComplete="password"
+                          textContentType="password"
+                          returnKeyType="go"
+                          onSubmitEditing={form.handleSubmit}
+                          className="pr-12"
+                        />
+                        <Pressable
+                          onPress={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 p-2"
+                        >
+                          <Ionicons
+                            name={
+                              showPassword ? "eye-off-outline" : "eye-outline"
+                            }
+                            size={22}
+                            color="#999"
+                          />
+                        </Pressable>
+                      </View>
                     </TextField>
                   )}
                 </form.Field>
 
-                <Button onPress={form.handleSubmit} isDisabled={isSubmitting} className="mt-1">
+                <Button
+                  onPress={form.handleSubmit}
+                  isDisabled={isSubmitting}
+                  className="mt-1"
+                >
                   {isSubmitting ? (
                     <Spinner size="sm" color="default" />
                   ) : (

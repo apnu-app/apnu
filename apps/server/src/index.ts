@@ -8,6 +8,8 @@ import { user } from "@apnu/db/schema/auth";
 import usersRoute from "./routes/users";
 import conversationsRoute from "./routes/conversations";
 
+import wsRoute, { websocket } from "./routes/ws";
+
 type Env = {
   Variables: {
     user: typeof user.$inferSelect;
@@ -52,12 +54,18 @@ app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 // Feature Routes - Chained for RPC support
 const routes = app
   .route("/api/users", usersRoute)
-  .route("/api/conversations", conversationsRoute);
+  .route("/api/conversations", conversationsRoute)
+  .route("/api/ws", wsRoute);
 
 app.get("/", (c) => {
   return c.text("Apnu API is running");
 });
 
-export default app;
+// Special export for Bun to handle WebSockets
+export default {
+  fetch: app.fetch,
+  websocket,
+};
 export type AppType = typeof routes;
+
 

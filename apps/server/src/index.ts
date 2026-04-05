@@ -1,10 +1,22 @@
 import { auth } from "@apnu/auth";
 import { env } from "@apnu/env/server";
-import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { createFactory } from "hono/factory";
+import { user } from "@apnu/db/schema/auth";
 
-const app = new Hono();
+import usersRoute from "./routes/users";
+import conversationsRoute from "./routes/conversations";
+
+type Env = {
+  Variables: {
+    user: typeof user.$inferSelect;
+    session: any;
+  };
+};
+
+const factory = createFactory<Env>();
+const app = factory.createApp();
 
 app.use(logger());
 app.use(
@@ -17,10 +29,35 @@ app.use(
   }),
 );
 
+// Global Error Handler
+app.onError((err, c) => {
+  console.error(`[Error] ${c.req.method} ${c.req.url}:`, err);
+  return c.json(
+    {
+      error: "Internal Server Error",
+      message: process.env.NODE_ENV === "production" ? undefined : err.message,
+    },
+    500
+  );
+});
+
+// Not Found Handler
+app.notFound((c) => {
+  return c.json({ error: "Not Found", path: c.req.path }, 404);
+});
+
+// Auth Route
 app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
+// Feature Routes - Chained for RPC support
+const routes = app
+  .route("/api/users", usersRoute)
+  .route("/api/conversations", conversationsRoute);
+
 app.get("/", (c) => {
-  return c.text("OK");
+  return c.text("Apnu API is running");
 });
 
 export default app;
+export type AppType = typeof routes;
+

@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "skills": {
+    "accessibility": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "computedHash": "494d59fffe67c87b485f4ee2fb1abd73fc9d0d508c4c8bd9c43a9edd3242f730"
+    },
+    "better-auth-best-practices": {
+      "source": "better-auth/skills",
+      "sourceType": "github",
+      "computedHash": "9ab075b5061be2a5f299c10505667345cc1ec76e8de4120901cfd586643e776f"
+    },
+    "building-native-ui": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "a0316d2ce842d2dd8067a144e339cf502329dc7701f9f5122268fdb3d4c980f7"
+    },
+    "drizzle-orm": {
+      "source": "bobmatnyc/claude-mpm-skills",
+      "sourceType": "github",
+      "computedHash": "c5132317134698624d023cbbbb612b99d2b20f532f6d1417639607cf401f03cd"
+    },
+    "email-and-password-best-practices": {
+      "source": "better-auth/skills",
+      "sourceType": "github",
+      "computedHash": "7786d722fa682b3d6a99793e73a9d51b59becefa595676134a993020633e068f"
+    },
+    "expo-api-routes": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "267bd3bfa27718103a74458df1e875ff6f6db31cba2ebe1d8a527cf25da39761"
+    },
+    "expo-cicd-workflows": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "6cd9fa605a8144d424daa02489633fa0b0fcb15d74e29d0d23e6d6d894fc51df"
+    },
+    "expo-deployment": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "2a26de7ec3faaf19333ec5660152e5e711ef000a29d75324dff51967bc382755"
+    },
+    "expo-dev-client": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "ea568acdc9036b82b969159757456e9a4cdfae7f645ac2fad5fdf0f734f53568"
+    },
+    "expo-tailwind-setup": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "16c53e80cacd65369acfd8a4f5cf06a60083cc6d980127b4b2e384b81ce0e547"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "hono": {
+      "source": "yusukebe/hono-skill",
+      "sourceType": "github",
+      "computedHash": "24bad73932f309cec73a5a9171b838f59050990a634d8590c2d2c204507e64f9"
+    },
+    "native-data-fetching": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "1127a1ab326935169ecf92ffda2d9fc04dc1450a7eecfbafd5157fa9c0126d31"
+    },
+    "organization-best-practices": {
+      "source": "better-auth/skills",
+      "sourceType": "github",
+      "computedHash": "fa7a76e45a1f9632e6d63e92b476cf566e64f6e93a2c8ee00bc77b4a74008fbd"
+    },
+    "seo": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "computedHash": "680cc12a17e9308b4592a2751db51615c618993f75362cb8e64207f6355a8c63"
+    },
+    "sleek-design-mobile-apps": {
+      "source": "sleekdotdesign/agent-skills",
+      "sourceType": "github",
+      "computedHash": "0d992cd879dab83e8c91127858035dbd233bdb7851e5030975f37c9c41448d73"
+    },
+    "tailwind-css-patterns": {
+      "source": "giuseppe-trisciuoglio/developer-kit",
+      "sourceType": "github",
+      "computedHash": "2fa1b2d4e0bc020dcbaa1e65af6f7ba75715116686e0fd663a4b268c8ace22d4"
+    },
+    "turborepo": {
+      "source": "vercel/turborepo",
+      "sourceType": "github",
+      "computedHash": "8941746a010948d4251798bd9703230b8841ab7efe988a0815022e870368b481"
+    },
+    "two-factor-authentication-best-practices": {
+      "source": "better-auth/skills",
+      "sourceType": "github",
+      "computedHash": "c4f3a299c62c1985b774b7c28e53b7e55c565dbf973fd52b08899e4bcfffa3f9"
+    },
+    "typescript-advanced-types": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "ee8377c523a911be41c31037b477805773ca5ab5ade181e44ca7dd3cd8df6692"
+    },
+    "upgrading-expo": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "7ccc3de855963fcfd8fa25a81a0baa98e165be0ae46577b736367c104959c30a"
+    },
+    "use-dom": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "63a18bc2e07d18313aa9749bbb59c542c9b141424c56bd5514907be276c5bf80"
+    },
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "575757e3e25761c8c562d6e395d29f0b76c98b1273c0bd72d88e6ab1bc9c7d42"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "43ca6c197f8ec13055079da7053232d477068b03ca443f9ac1bc819b95cdd432"
+    }
+  }
+}

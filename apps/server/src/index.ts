@@ -8,6 +8,7 @@ import { user } from "@apnu/db/schema/auth";
 import usersRoute from "./routes/users";
 import conversationsRoute from "./routes/conversations";
 import locationRoute from "./routes/location";
+import swipeRoute from "./routes/swipe";
 
 import wsRoute, { websocket } from "./routes/ws";
 
@@ -69,6 +70,7 @@ const routes = app
   .route("/api/users", usersRoute)
   .route("/api/conversations", conversationsRoute)
   .route("/api/location", locationRoute)
+  .route("/api/swipe", swipeRoute)
   .route("/api/ws", wsRoute);
 
 app.get("/", (c) => {

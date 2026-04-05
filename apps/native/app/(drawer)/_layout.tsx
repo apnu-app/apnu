@@ -19,10 +19,10 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="index"
         options={{
-          drawerLabel: "Dashboard",
-          title: "Home",
+          drawerLabel: "Discover",
+          title: "Discover",
           drawerIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "home" : "home-outline"} size={22} color={color} />
+            <Ionicons name={focused ? "flame" : "flame-outline"} size={22} color={color} />
           ),
         }}
       />

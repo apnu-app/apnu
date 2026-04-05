@@ -12,7 +12,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
-import { Text, TextInput, View, Pressable } from "react-native";
+import { Text, TextInput, View, Pressable, TouchableOpacity, Linking } from "react-native";
 import z from "zod";
 
 import { authClient } from "@/lib/auth-client";
@@ -21,6 +21,12 @@ const signUpSchema = z.object({
   name: z.string().trim().min(1, "Name is required").min(2, "Name must be at least 2 characters"),
   email: z.string().trim().min(1, "Email is required").email("Enter a valid email address"),
   password: z.string().min(1, "Password is required").min(8, "Use at least 8 characters"),
+  ageAgreed: z.boolean().refine((val) => val === true, {
+    message: "You must be 18+ and a college student",
+  }),
+  termsAgreed: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the Terms and Privacy Policy",
+  }),
 });
 
 function getErrorMessage(error: unknown): string | null {
@@ -62,6 +68,8 @@ export function SignUp() {
       name: "",
       email: "",
       password: "",
+      ageAgreed: false,
+      termsAgreed: false,
     },
     validators: {
       onSubmit: signUpSchema,
@@ -107,87 +115,171 @@ export function SignUp() {
           const formError = validationError;
 
           return (
-            <>
-              <FieldError isInvalid={!!formError} className="mb-3">
-                {formError}
-              </FieldError>
-
               <View className="gap-3">
                 <form.Field name="name">
                   {(field) => (
-                    <TextField>
-                      <Label>Name</Label>
-                      <Input
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChangeText={field.handleChange}
-                        placeholder="John Doe"
-                        autoComplete="name"
-                        textContentType="name"
-                        returnKeyType="next"
-                        blurOnSubmit={false}
-                        onSubmitEditing={() => {
-                          emailInputRef.current?.focus();
-                        }}
-                      />
-                    </TextField>
+                    <View>
+                      <TextField isInvalid={!!field.state.meta.errors.length}>
+                        <Label>Name</Label>
+                        <Input
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChangeText={field.handleChange}
+                          placeholder="John Doe"
+                          autoComplete="name"
+                          textContentType="name"
+                          returnKeyType="next"
+                          blurOnSubmit={false}
+                          onSubmitEditing={() => {
+                            emailInputRef.current?.focus();
+                          }}
+                        />
+                      </TextField>
+                      {field.state.meta.errors.length > 0 && (
+                        <Text style={{ color: '#ff385c', fontSize: 12, marginTop: 4 }}>
+                          {getErrorMessage(field.state.meta.errors)}
+                        </Text>
+                      )}
+                    </View>
                   )}
                 </form.Field>
 
                 <form.Field name="email">
                   {(field) => (
-                    <TextField>
-                      <Label>Email</Label>
-                      <Input
-                        ref={emailInputRef}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChangeText={field.handleChange}
-                        placeholder="email@example.com"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        autoComplete="email"
-                        textContentType="emailAddress"
-                        returnKeyType="next"
-                        blurOnSubmit={false}
-                        onSubmitEditing={() => {
-                          passwordInputRef.current?.focus();
-                        }}
-                      />
-                    </TextField>
+                    <View>
+                      <TextField isInvalid={!!field.state.meta.errors.length}>
+                        <Label>Email</Label>
+                        <Input
+                          ref={emailInputRef}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChangeText={field.handleChange}
+                          placeholder="email@example.com"
+                          keyboardType="email-address"
+                          autoCapitalize="none"
+                          autoComplete="email"
+                          textContentType="emailAddress"
+                          returnKeyType="next"
+                          blurOnSubmit={false}
+                          onSubmitEditing={() => {
+                            passwordInputRef.current?.focus();
+                          }}
+                        />
+                      </TextField>
+                      {field.state.meta.errors.length > 0 && (
+                        <Text style={{ color: '#ff385c', fontSize: 12, marginTop: 4 }}>
+                          {getErrorMessage(field.state.meta.errors)}
+                        </Text>
+                      )}
+                    </View>
                   )}
                 </form.Field>
 
                 <form.Field name="password">
                   {(field) => (
-                    <TextField>
-                      <Label>Password</Label>
-                      <View className="relative">
-                        <Input
-                          ref={passwordInputRef}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChangeText={field.handleChange}
-                          placeholder="••••••••"
-                          secureTextEntry={!showPassword}
-                          autoComplete="new-password"
-                          textContentType="newPassword"
-                          returnKeyType="go"
-                          onSubmitEditing={form.handleSubmit}
-                          className="pr-12"
-                        />
-                        <Pressable 
-                          onPress={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 p-2"
-                        >
-                          <Ionicons 
-                            name={showPassword ? "eye-off-outline" : "eye-outline"} 
-                            size={22} 
-                            color="#999" 
+                    <View>
+                      <TextField isInvalid={!!field.state.meta.errors.length}>
+                        <Label>Password</Label>
+                        <View className="relative">
+                          <Input
+                            ref={passwordInputRef}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChangeText={field.handleChange}
+                            placeholder="••••••••"
+                            secureTextEntry={!showPassword}
+                            autoComplete="new-password"
+                            textContentType="newPassword"
+                            returnKeyType="go"
+                            onSubmitEditing={form.handleSubmit}
+                            className="pr-12"
                           />
-                        </Pressable>
-                      </View>
-                    </TextField>
+                          <Pressable 
+                            onPress={() => setShowPassword(!showPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2"
+                          >
+                            <Ionicons 
+                              name={showPassword ? "eye-off-outline" : "eye-outline"} 
+                              size={22} 
+                              color="#999" 
+                            />
+                          </Pressable>
+                        </View>
+                      </TextField>
+                      {field.state.meta.errors.length > 0 && (
+                        <Text style={{ color: '#ff385c', fontSize: 12, marginTop: 4 }}>
+                          {getErrorMessage(field.state.meta.errors)}
+                        </Text>
+                      )}
+                    </View>
+                  )}
+                </form.Field>
+
+                <form.Field name="ageAgreed">
+                  {(field) => (
+                    <View className="mb-1">
+                      <TouchableOpacity 
+                        onPress={() => field.handleChange(!field.state.value)} 
+                        activeOpacity={0.7} 
+                        style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 10, marginTop: 4 }}
+                      >
+                        <View style={{ 
+                          width: 20, 
+                          height: 20, 
+                          borderRadius: 5, 
+                          borderWidth: 2, 
+                          borderColor: field.state.value ? '#ff385c' : '#E5E7EB',
+                          backgroundColor: field.state.value ? '#ff385c' : 'transparent',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          marginTop: 2
+                        }}>
+                          {field.state.value && <Ionicons name="checkmark" size={14} color="white" />}
+                        </View>
+                        <Text style={{ flex: 1, fontSize: 13, color: '#4B5563', lineHeight: 18 }}>
+                          I am 18 or older and currently enrolled at a college in Ahmedabad or Gandhinagar.
+                        </Text>
+                      </TouchableOpacity>
+                      {field.state.meta.errors.length > 0 && (
+                        <Text style={{ color: '#ff385c', fontSize: 11, marginLeft: 30, marginTop: 4 }}>
+                          {getErrorMessage(field.state.meta.errors)}
+                        </Text>
+                      )}
+                    </View>
+                  )}
+                </form.Field>
+
+                <form.Field name="termsAgreed">
+                  {(field) => (
+                    <View className="mb-2">
+                      <TouchableOpacity 
+                        onPress={() => field.handleChange(!field.state.value)} 
+                        activeOpacity={0.7} 
+                        style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 10, marginTop: 4 }}
+                      >
+                        <View style={{ 
+                          width: 20, 
+                          height: 20, 
+                          borderRadius: 5, 
+                          borderWidth: 2, 
+                          borderColor: field.state.value ? '#ff385c' : '#E5E7EB',
+                          backgroundColor: field.state.value ? '#ff385c' : 'transparent',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          marginTop: 2
+                        }}>
+                          {field.state.value && <Ionicons name="checkmark" size={14} color="white" />}
+                        </View>
+                        <Text style={{ flex: 1, fontSize: 13, color: '#4B5563', lineHeight: 18 }}>
+                          I have read and agree to the <Text onPress={() => Linking.openURL('https://www.apnu.me/privacy')} style={{ color: '#ff385c', fontWeight: '700', textDecorationLine: 'underline' }}>Terms and Conditions</Text> and <Text onPress={() => Linking.openURL('https://www.apnu.me/privacy')} style={{ color: '#ff385c', fontWeight: '700', textDecorationLine: 'underline' }}>Privacy Policy</Text>.
+                        </Text>
+                      </TouchableOpacity>
+                      {field.state.meta.errors.length > 0 && (
+                        <Text style={{ color: '#ff385c', fontSize: 11, marginLeft: 30, marginTop: 4 }}>
+                          {getErrorMessage(field.state.meta.errors)}
+                        </Text>
+                      )}
+                    </View>
                   )}
                 </form.Field>
 
@@ -203,7 +295,6 @@ export function SignUp() {
                   )}
                 </Button>
               </View>
-            </>
           );
         }}
       </form.Subscribe>

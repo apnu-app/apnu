@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Pressable, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, Pressable, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { SignUp } from '@/components/sign-up';
@@ -28,16 +28,21 @@ export default function SignUpScreen() {
         </Pressable>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-        <View style={styles.content}>
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Let's get you set up to start track your analytics.</Text>
-          
-          <View style={styles.formContainer}>
-            <SignUp />
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+          <View style={styles.content}>
+            <Text style={styles.title}>Create Account</Text>
+            <Text style={styles.subtitle}>Let's get you set up to start track your analytics.</Text>
+            
+            <View style={styles.formContainer}>
+              <SignUp />
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }

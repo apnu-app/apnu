@@ -110,67 +110,76 @@ function SignIn() {
           const formError = validationError;
 
           return (
-            <>
-              <FieldError isInvalid={!!formError} className="mb-3">
-                {formError}
-              </FieldError>
-
               <View className="gap-3">
                 <form.Field name="email">
                   {(field) => (
-                    <TextField>
-                      <Label>Email</Label>
-                      <Input
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChangeText={field.handleChange}
-                        placeholder="email@example.com"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        autoComplete="email"
-                        textContentType="emailAddress"
-                        returnKeyType="next"
-                        blurOnSubmit={false}
-                        onSubmitEditing={() => {
-                          passwordInputRef.current?.focus();
-                        }}
-                      />
-                    </TextField>
+                    <View>
+                      <TextField isInvalid={!!field.state.meta.errors.length}>
+                        <Label>Email</Label>
+                        <Input
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChangeText={field.handleChange}
+                          placeholder="email@example.com"
+                          keyboardType="email-address"
+                          autoCapitalize="none"
+                          autoComplete="email"
+                          textContentType="emailAddress"
+                          returnKeyType="next"
+                          blurOnSubmit={false}
+                          onSubmitEditing={() => {
+                            passwordInputRef.current?.focus();
+                          }}
+                        />
+                      </TextField>
+                      {field.state.meta.errors.length > 0 && (
+                        <Text style={{ color: '#ff385c', fontSize: 12, marginTop: 4 }}>
+                          {getErrorMessage(field.state.meta.errors)}
+                        </Text>
+                      )}
+                    </View>
                   )}
                 </form.Field>
 
                 <form.Field name="password">
                   {(field) => (
-                    <TextField>
-                      <Label>Password</Label>
-                      <View className="relative">
-                        <Input
-                          ref={passwordInputRef}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChangeText={field.handleChange}
-                          placeholder="••••••••"
-                          secureTextEntry={!showPassword}
-                          autoComplete="password"
-                          textContentType="password"
-                          returnKeyType="go"
-                          onSubmitEditing={form.handleSubmit}
-                          className="pr-12"
-                        />
-                        <Pressable
-                          onPress={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 p-2"
-                        >
-                          <Ionicons
-                            name={
-                              showPassword ? "eye-off-outline" : "eye-outline"
-                            }
-                            size={22}
-                            color="#999"
+                    <View>
+                      <TextField isInvalid={!!field.state.meta.errors.length}>
+                        <Label>Password</Label>
+                        <View className="relative">
+                          <Input
+                            ref={passwordInputRef}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChangeText={field.handleChange}
+                            placeholder="••••••••"
+                            secureTextEntry={!showPassword}
+                            autoComplete="password"
+                            textContentType="password"
+                            returnKeyType="go"
+                            onSubmitEditing={form.handleSubmit}
+                            className="pr-12"
                           />
-                        </Pressable>
-                      </View>
-                    </TextField>
+                          <Pressable
+                            onPress={() => setShowPassword(!showPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2"
+                          >
+                            <Ionicons
+                              name={
+                                showPassword ? "eye-off-outline" : "eye-outline"
+                              }
+                              size={22}
+                              color="#999"
+                            />
+                          </Pressable>
+                        </View>
+                      </TextField>
+                      {field.state.meta.errors.length > 0 && (
+                        <Text style={{ color: '#ff385c', fontSize: 12, marginTop: 4 }}>
+                          {getErrorMessage(field.state.meta.errors)}
+                        </Text>
+                      )}
+                    </View>
                   )}
                 </form.Field>
 
@@ -186,7 +195,6 @@ function SignIn() {
                   )}
                 </Button>
               </View>
-            </>
           );
         }}
       </form.Subscribe>

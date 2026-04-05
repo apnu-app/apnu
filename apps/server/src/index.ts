@@ -7,6 +7,7 @@ import { user } from "@apnu/db/schema/auth";
 
 import usersRoute from "./routes/users";
 import conversationsRoute from "./routes/conversations";
+import locationRoute from "./routes/location";
 
 import wsRoute, { websocket } from "./routes/ws";
 
@@ -43,6 +44,18 @@ app.onError((err, c) => {
   );
 });
 
+// Auth Middleware mapping
+app.use("/api/*", async (c, next) => {
+  if (c.req.path.startsWith("/api/auth")) {
+    return next();
+  }
+  const session = await auth.api.getSession({
+    headers: c.req.raw.headers,
+  });
+  c.set("session", session);
+  return next();
+});
+
 // Not Found Handler
 app.notFound((c) => {
   return c.json({ error: "Not Found", path: c.req.path }, 404);
@@ -55,6 +68,7 @@ app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 const routes = app
   .route("/api/users", usersRoute)
   .route("/api/conversations", conversationsRoute)
+  .route("/api/location", locationRoute)
   .route("/api/ws", wsRoute);
 
 app.get("/", (c) => {

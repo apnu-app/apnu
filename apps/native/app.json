@@ -8,7 +8,16 @@
     },
     "name": "apnu",
     "slug": "apnu",
-    "plugins": ["expo-font"],
+    "plugins": [
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ],
+      "react-native-maps"
+    ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
